@@ -246,6 +246,42 @@ export const contact = {
   ],
 };
 
+/**
+ * Formulir pendaftaran di halaman kontak.
+ *
+ * Kiriman mendarat di modul onboarding Odoo sebagai `onboarding.public.submission`,
+ * lalu dipromosikan menjadi journey oleh operator dari konsol admin.
+ */
+export const registration = {
+  eyebrow: "Pendaftaran",
+  title: "Daftarkan perusahaan Anda",
+  description:
+    "Isian ini masuk langsung ke antrean onboarding kami, bukan ke kotak masuk umum. Yang wajib hanya empat kolom pertama; sisanya membantu kami menyiapkan pembicaraan pertama yang lebih berguna.",
+  verticals: [
+    "Ritel / F&B",
+    "Distribusi & grosir",
+    "Manufaktur",
+    "Jasa & profesional",
+    "PPOB / keagenan",
+    "Lainnya",
+  ],
+  interests: [
+    "Belum tahu, butuh diskusi dulu",
+    "ATHERA ERP (Odoo)",
+    "ATHERA Insight (dasbor & analitik)",
+    "ATHERA Agent (pratinjau terbatas)",
+    "Audit sistem yang sudah ada",
+  ],
+  sizes: ["1-10 orang", "11-50 orang", "51-200 orang", "Lebih dari 200 orang"],
+  consent:
+    "Saya setuju data pada formulir ini diproses untuk menanggapi permintaan saya.",
+  consentNote:
+    "Kami memakainya hanya untuk menanggapi permintaan ini dan tidak membagikannya ke pihak ketiga. Permintaan penghapusan bisa dikirim kapan saja ke alamat email di bawah.",
+  successTitle: "Terima kasih, pendaftaran Anda sudah masuk.",
+  successBody:
+    "Kami membacanya sendiri, bukan lewat autoresponder. Balasan pertama biasanya berisi pertanyaan agar kami tidak menawarkan sesuatu yang belum tentu Anda butuhkan.",
+};
+
 export const finalCta = {
   title: "Sistem yang rapi dimulai dari satu percakapan",
   description:

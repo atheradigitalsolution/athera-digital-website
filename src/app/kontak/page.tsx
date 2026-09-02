@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Backdrop } from "@/components/backdrop";
-import { Card, Eyebrow, Section } from "@/components/section";
-import { company, contact, processSteps } from "@/lib/site";
+import { Card, Eyebrow, Section, SectionHeading } from "@/components/section";
+import { RegistrationForm, isFeedback } from "@/components/registration-form";
+import { company, contact, processSteps, registration } from "@/lib/site";
 import { products } from "@/lib/products";
 
 export const metadata: Metadata = {
@@ -12,7 +13,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/kontak" },
 };
 
-export default function KontakPage() {
+export default async function KontakPage(props: PageProps<"/kontak">) {
+  const { f } = await props.searchParams;
+  const feedback = isFeedback(f) ? f : undefined;
+
   return (
     <>
       <section className="relative overflow-hidden border-b border-border">
@@ -41,17 +45,17 @@ export default function KontakPage() {
 
             <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <a
-                href={`mailto:${company.email}?subject=${encodeURIComponent("Konsultasi sistem — dari website")}`}
+                href="#daftar"
                 className="ath-sheen overflow-hidden rounded-full bg-accent px-7 py-3.5 text-center text-sm font-medium text-accent-contrast transition-opacity hover:opacity-90"
               >
-                Kirim email
+                Isi formulir pendaftaran
               </a>
-              <Link
-                href="/produk"
+              <a
+                href={`mailto:${company.email}?subject=${encodeURIComponent("Konsultasi sistem — dari website")}`}
                 className="rounded-full border border-border px-7 py-3.5 text-center text-sm font-medium transition-colors hover:border-accent/50 hover:text-accent"
               >
-                Lihat produk dulu
-              </Link>
+                Kirim email biasa
+              </a>
             </div>
           </div>
 
@@ -98,9 +102,22 @@ export default function KontakPage() {
         </div>
       </section>
 
+      <Section id="daftar">
+        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+          <div>
+            <SectionHeading
+              eyebrow={registration.eyebrow}
+              title={registration.title}
+              description={registration.description}
+            />
+          </div>
+          <RegistrationForm feedback={feedback} />
+        </div>
+      </Section>
+
       <Section>
         <h2 className="ath-reveal text-sm font-semibold uppercase tracking-wider text-muted">
-          Yang terjadi setelah Anda mengirim email
+          Yang terjadi setelah pendaftaran Anda masuk
         </h2>
         <ol className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((step) => (
