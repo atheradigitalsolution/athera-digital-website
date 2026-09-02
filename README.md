@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# athera-digital-website
 
-## Getting Started
+Situs company profile [athera-digital.com](https://athera-digital.com) —
+Athera Digital Solution.
 
-First, run the development server:
+## Teknologi
+
+- [Next.js 16](https://nextjs.org) (App Router) dengan React 19
+- TypeScript
+- Tailwind CSS v4
+- Build dengan Turbopack, output `standalone`
+
+Halaman dirender sepenuhnya di server dan di-prerender saat build. Tidak ada
+client component sama sekali — menu pada layar kecil memakai elemen `<details>`
+bawaan HTML, sehingga situs tetap berfungsi penuh tanpa JavaScript.
+
+## Menjalankan secara lokal
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Perintah lain:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build    # build produksi
+npm run start    # menjalankan hasil build
+npm run lint     # ESLint
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Mengubah isi situs
 
-## Learn More
+**Seluruh teks situs ada di [`src/lib/site.ts`](src/lib/site.ts).** Untuk mengubah
+konten, sunting file itu saja — komponen tampilan membacanya, jadi tidak perlu
+menyentuh JSX.
 
-To learn more about Next.js, take a look at the following resources:
+Bagian yang ditandai `TODO` di file tersebut masih berisi placeholder dan perlu
+diganti dengan data yang sebenarnya.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Struktur
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── layout.tsx      # kerangka halaman, metadata, font
+│   ├── page.tsx        # halaman utama beserta seluruh seksinya
+│   └── globals.css     # token tema (mode terang & gelap)
+├── components/
+│   ├── site-header.tsx
+│   ├── site-footer.tsx
+│   └── wordmark.tsx
+└── lib/
+    └── site.ts         # SELURUH KONTEN SITUS ADA DI SINI
+```
 
-## Deploy on Vercel
+## Tema
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Warna didefinisikan sebagai CSS custom property di `globals.css` dan dipetakan
+ke Tailwind lewat blok `@theme inline`. Mode gelap mengikuti preferensi sistem
+pengunjung melalui `prefers-color-scheme` — tidak ada tombol pengalih tema.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Untuk mengubah warna aksen, cukup ubah `--accent`, `--accent-soft`, dan
+`--accent-contrast` pada kedua blok (terang dan gelap).
+
+## Deployment
+
+Situs berjalan sebagai service systemd di belakang reverse proxy, memakai
+output `standalone` Next.js agar bundel runtime tetap minimal.
+
+Proses build dan pemasangan dijalankan oleh skrip `athera-web-deploy` di server.
+Perlu diperhatikan: `.next/static` dan `public/` **tidak** ikut ke dalam
+direktori `standalone` secara otomatis dan harus disalin terpisah — kalau
+terlewat, situs akan tampil tanpa CSS.
+
+## Catatan untuk AI coding agent
+
+Repo ini memuat `AGENTS.md` yang dihasilkan Next.js 16. Baca dokumentasi di
+`node_modules/next/dist/docs/` sebelum menulis kode, karena versi ini
+mengandung sejumlah perubahan breaking dibanding versi sebelumnya.
