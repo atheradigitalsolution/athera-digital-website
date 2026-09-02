@@ -1,123 +1,227 @@
-import { about, company, contact, hero, processSteps, services } from "@/lib/site";
+import Link from "next/link";
+import { Backdrop } from "@/components/backdrop";
+import { CountUp } from "@/components/count-up";
+import { FlowDiagram } from "@/components/flow-diagram";
+import { Marquee } from "@/components/marquee";
+import { Pipeline } from "@/components/pipeline";
+import { ProductCard } from "@/components/product-card";
+import { Card, Eyebrow, Section, SectionHeading } from "@/components/section";
+import { FinalCta } from "@/components/cta";
+import { products } from "@/lib/products";
+import {
+  about,
+  compliance,
+  hero,
+  processSteps,
+  proof,
+  services,
+  stack,
+} from "@/lib/site";
 
-function SectionHeading({
-  eyebrow,
-  title,
-  description,
-}: {
-  eyebrow: string;
-  title: string;
-  description?: string;
-}) {
+export default function Home() {
   return (
-    <div className="max-w-2xl">
-      <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-        {eyebrow}
-      </p>
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-        {title}
-      </h2>
-      {description ? (
-        <p className="mt-4 text-base leading-relaxed text-muted">{description}</p>
-      ) : null}
-    </div>
-  );
-}
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border">
+        <Backdrop />
+        <div className="mx-auto grid w-full max-w-6xl gap-14 px-6 py-20 sm:py-28 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:gap-10">
+          <div>
+            <Eyebrow>{hero.eyebrow}</Eyebrow>
+            <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+              {hero.title}
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
+              {hero.description}
+            </p>
 
-function Hero() {
-  return (
-    <section className="relative overflow-hidden border-b border-border">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 -top-40 h-80 bg-accent/10 blur-3xl"
-      />
-      <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32">
-        <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-          {hero.eyebrow}
-        </p>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-tight tracking-tight text-balance sm:text-5xl lg:text-6xl">
-          {hero.title}
-        </h1>
-        <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-          {hero.description}
-        </p>
-        <div className="mt-10 flex flex-wrap gap-4">
-          <a
-            href={hero.primaryCta.href}
-            className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-contrast transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {hero.primaryCta.label}
-          </a>
-          <a
-            href={hero.secondaryCta.href}
-            className="rounded-full border border-border px-6 py-3 text-sm font-medium transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-          >
-            {hero.secondaryCta.label}
-          </a>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href={hero.primaryCta.href}
+                className="ath-sheen overflow-hidden rounded-full bg-accent px-7 py-3.5 text-center text-sm font-medium text-accent-contrast transition-opacity hover:opacity-90"
+              >
+                {hero.primaryCta.label}
+              </Link>
+              <Link
+                href={hero.secondaryCta.href}
+                className="rounded-full border border-border px-7 py-3.5 text-center text-sm font-medium transition-colors hover:border-accent/50 hover:text-accent"
+              >
+                {hero.secondaryCta.label}
+              </Link>
+            </div>
+
+            <p className="mt-7 flex items-center gap-2.5 font-mono text-xs text-muted">
+              <span
+                aria-hidden="true"
+                className="ath-pulse inline-block size-2 rounded-full bg-[var(--ok)]"
+              />
+              {hero.status}
+            </p>
+          </div>
+
+          <FlowDiagram className="w-full" />
         </div>
-      </div>
-    </section>
-  );
-}
+      </section>
 
-function Services() {
-  return (
-    <section id="layanan" className="scroll-mt-20 border-b border-border">
-      <div className="mx-auto max-w-6xl px-6 py-24">
+      {/* Angka pembuka */}
+      <Section>
+        <div className="ath-reveal flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted">
+            Angka yang bisa ditelusuri
+          </h2>
+          <p className="font-mono text-xs text-muted">{proof.note}</p>
+        </div>
+
+        <dl className="ath-reveal mt-10 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+          {proof.items.map((item) => (
+            <div
+              key={item.label}
+              className="flex flex-col-reverse bg-surface-raised px-6 py-8"
+            >
+              <dt className="mt-2 text-sm text-muted">{item.label}</dt>
+              <dd className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                <CountUp
+                  value={item.value}
+                  decimals={item.decimals}
+                  suffix={item.suffix}
+                />
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="ath-reveal mt-10">
+          <Marquee items={stack} />
+        </div>
+      </Section>
+
+      {/* Produk */}
+      <Section id="produk">
         <SectionHeading
-          eyebrow="Layanan"
-          title="Empat hal yang kami kerjakan sampai tuntas"
-          description="Bukan daftar panjang yang serba bisa. Ini bidang yang benar-benar kami dalami, dan saling terhubung satu sama lain."
+          eyebrow="Tiga produk"
+          title="Satu platform, dipakai dari tiga arah berbeda"
+          description="Ketiganya berdiri di atas data yang sama dan aturan akses yang sama. Anda bisa mulai dari satu, dan menambah yang lain tanpa memindahkan data lagi."
         />
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {services.map((service) => (
-            <article
-              key={service.id}
-              className="flex flex-col rounded-2xl border border-border bg-surface-raised p-8 transition-colors hover:border-accent/40"
+        <ul className="mt-14 grid gap-6 lg:grid-cols-3">
+          {products.map((product) => (
+            <ProductCard key={product.slug} product={product} />
+          ))}
+        </ul>
+      </Section>
+
+      {/* Cara kerja */}
+      <Section>
+        <SectionHeading
+          eyebrow="Cara kerjanya"
+          title="Dari transaksi di ERP sampai angka di layar"
+          description="Perubahan dibaca dari log transaksi database — bukan dengan menanyai ulang tabel operasional — lalu disamarkan, disimpan, dimodelkan, dan disajikan beserta stempel kesegarannya."
+        />
+
+        <div className="ath-reveal mt-14">
+          <Pipeline steps={products[0].pipeline} />
+        </div>
+
+        <div className="ath-reveal mt-12 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              title: "Tidak membebani ERP",
+              body: "Dasbor tidak pernah menembak database operasional. Kueri analitik jatuh ke gudang terpisah, sehingga tim Anda tetap bekerja di sistem yang responsif.",
+            },
+            {
+              title: "Penghapusan ikut terbawa",
+              body: "Data yang dihapus di ERP hilang juga dari gudang. Sinkronisasi berbasis kolom tanggal ubah tidak bisa melakukan ini.",
+            },
+            {
+              title: "Basi terlihat basi",
+              body: "Kesegaran dibaca dari catatan pipeline, bukan dari jam server. Pipeline yang mati tampak mati, bukan tampak sehat dengan angka kemarin.",
+            },
+          ].map((item) => (
+            <Card key={item.title} className="p-6">
+              <h3 className="text-base font-semibold tracking-tight">{item.title}</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">{item.body}</p>
+            </Card>
+          ))}
+        </div>
+      </Section>
+
+      {/* Kepatuhan */}
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-16">
+          <div>
+            <SectionHeading
+              eyebrow={compliance.eyebrow}
+              title={compliance.title}
+              description={compliance.description}
+            />
+            <Link
+              href="/kepatuhan"
+              className="ath-reveal mt-8 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-2"
             >
-              <h3 className="text-xl font-semibold tracking-tight">
-                {service.name}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
+              Lihat posisi kepatuhan kami
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+
+          <ul className="ath-reveal grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-2">
+            {compliance.numbers.map((item) => (
+              <li key={item.label} className="bg-surface-raised px-6 py-7">
+                <p className="text-3xl font-semibold tracking-tight">{item.value}</p>
+                <p className="mt-1.5 text-sm text-muted">{item.label}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+      {/* Layanan */}
+      <Section>
+        <SectionHeading
+          eyebrow="Layanan"
+          title="Produk saja tidak cukup kalau tidak ada yang memasangnya"
+          description="Selain ketiga produk di atas, kami mengerjakan bagian yang membuatnya benar-benar berjalan di tempat Anda."
+        />
+
+        <ul className="mt-14 grid gap-6 md:grid-cols-2">
+          {services.map((service) => (
+            <Card key={service.id} as="li" className="ath-reveal p-7">
+              <h3 className="text-lg font-semibold tracking-tight">{service.name}</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-muted">
                 {service.summary}
               </p>
-              <ul className="mt-6 space-y-3 text-sm">
+              <ul className="mt-5 space-y-2 border-t border-border pt-5 text-sm text-muted">
                 {service.points.map((point) => (
                   <li key={point} className="flex gap-3">
                     <span
                       aria-hidden="true"
-                      className="mt-2 size-1.5 shrink-0 rounded-full bg-accent"
+                      className="mt-2 size-1.5 shrink-0 rounded-full bg-accent/70"
                     />
-                    <span className="text-muted">{point}</span>
+                    {point}
                   </li>
                 ))}
               </ul>
-            </article>
+            </Card>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+        </ul>
+      </Section>
 
-function Process() {
-  return (
-    <section id="pendekatan" className="scroll-mt-20 border-b border-border bg-surface">
-      <div className="mx-auto max-w-6xl px-6 py-24">
+      {/* Proses */}
+      <Section>
         <SectionHeading
-          eyebrow="Pendekatan"
-          title="Bertahap, dan setiap tahap ada hasilnya"
-          description="Proyek sistem gagal bukan karena teknologinya kurang canggih, tapi karena terlalu lama sebelum ada yang bisa dipakai."
+          eyebrow="Cara kami bekerja"
+          title="Empat tahap, tiap tahap menghasilkan sesuatu yang bisa dipakai"
         />
 
-        <ol className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {processSteps.map((step) => (
-            <li key={step.number}>
-              <span className="font-mono text-sm font-medium text-accent">
+            <li key={step.number} className="ath-reveal relative pl-5">
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-1 h-full w-px bg-gradient-to-b from-accent/60 to-transparent"
+              />
+              <p className="font-mono text-xs tracking-[0.2em] text-accent">
                 {step.number}
-              </span>
-              <h3 className="mt-3 text-lg font-semibold tracking-tight">
+              </p>
+              <h3 className="mt-3 text-base font-semibold tracking-tight">
                 {step.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">
@@ -126,97 +230,28 @@ function Process() {
             </li>
           ))}
         </ol>
-      </div>
-    </section>
-  );
-}
+      </Section>
 
-function About() {
-  return (
-    <section id="tentang" className="scroll-mt-20 border-b border-border">
-      <div className="mx-auto max-w-6xl px-6 py-24">
-        <div className="grid gap-16 lg:grid-cols-2">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-              Tentang kami
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              {about.title}
-            </h2>
-            <div className="mt-6 space-y-4">
-              {about.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="text-base leading-relaxed text-muted">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </div>
-
-          <ul className="space-y-6">
-            {about.highlights.map((item) => (
-              <li
-                key={item.title}
-                className="rounded-2xl border border-border bg-surface-raised p-6"
-              >
-                <h3 className="text-base font-semibold tracking-tight">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted">
-                  {item.description}
-                </p>
-              </li>
+      {/* Tentang singkat */}
+      <Section>
+        <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
+          <SectionHeading title={about.title} eyebrow="Tentang kami" />
+          <div className="ath-reveal space-y-5 text-base leading-relaxed text-muted">
+            {about.paragraphs.slice(0, 2).map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
             ))}
-          </ul>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Contact() {
-  return (
-    <section id="kontak" className="scroll-mt-20">
-      <div className="mx-auto max-w-6xl px-6 py-24">
-        <div className="rounded-3xl border border-border bg-surface p-10 sm:p-14">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">
-              {contact.title}
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-muted">
-              {contact.description}
-            </p>
-          </div>
-
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href={`mailto:${company.email}`}
-              className="rounded-full bg-accent px-6 py-3 text-sm font-medium text-accent-contrast transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            <Link
+              href="/tentang"
+              className="inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-2"
             >
-              Kirim email ke {company.email}
-            </a>
-            {company.phone ? (
-              <a
-                href={`tel:${company.phone.replace(/[^\d+]/g, "")}`}
-                className="rounded-full border border-border px-6 py-3 text-sm font-medium transition-colors hover:bg-surface-raised"
-              >
-                {company.phone}
-              </a>
-            ) : null}
+              Selengkapnya tentang cara kami bekerja
+              <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
+      </Section>
 
-export default function Home() {
-  return (
-    <>
-      <Hero />
-      <Services />
-      <Process />
-      <About />
-      <Contact />
+      <FinalCta />
     </>
   );
 }

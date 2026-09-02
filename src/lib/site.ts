@@ -1,14 +1,13 @@
 /**
- * Seluruh teks situs ada di file ini.
+ * Seluruh teks situs ada di berkas ini dan di `products.ts`.
  *
- * Untuk mengubah isi website, sunting file ini saja — tidak perlu menyentuh
- * komponen tampilan. Bagian yang ditandai TODO berisi placeholder yang harus
- * diganti dengan data Athera Digital yang sebenarnya.
+ * Untuk mengubah isi website, sunting kedua berkas itu saja — komponen
+ * tampilan hanya membacanya. Bagian bertanda TODO masih menunggu data asli.
  */
 
 export const company = {
   name: "Athera Digital Solution",
-  shortName: "Athera Digital",
+  shortName: "ATHERA",
   domain: "athera-digital.com",
   tagline: "Sistem bisnis yang benar-benar dipakai tim Anda",
   email: "info@athera-digital.com",
@@ -18,13 +17,53 @@ export const company = {
 };
 
 export const hero = {
-  eyebrow: "Konsultan & pengembang sistem bisnis",
-  title: "Sistem bisnis yang benar-benar dipakai tim Anda",
+  eyebrow: "ERP · Analitik · Otomasi",
+  title: "Satu platform, tiga produk, di atas data Anda sendiri",
   description:
-    "Kami merancang, membangun, dan merawat ERP, dashboard, serta aplikasi internal untuk perusahaan yang sudah melewati fase spreadsheet — dan mulai kehilangan jejak datanya sendiri.",
-  primaryCta: { label: "Diskusikan kebutuhan Anda", href: "#kontak" },
-  secondaryCta: { label: "Lihat layanan", href: "#layanan" },
+    "Kami membangun dan merawat tulang punggung operasional perusahaan: ERP yang mencerminkan proses Anda, dasbor yang angkanya bisa dipertanggungjawabkan, dan asisten yang menjawab dari data Anda — tanpa memindahkannya ke tempat lain.",
+  primaryCta: { label: "Lihat produk", href: "/produk" },
+  secondaryCta: { label: "Diskusikan kebutuhan", href: "/kontak" },
+  /** Ditampilkan sebagai baris status kecil di bawah tombol. */
+  status: "Berjalan di produksi sejak 2026 · dipantau 24/7 · backup harian teruji pulih",
 };
+
+export const nav = [
+  { label: "Produk", href: "/produk" },
+  { label: "Kepatuhan", href: "/kepatuhan" },
+  { label: "Layanan", href: "/layanan" },
+  { label: "Tentang", href: "/tentang" },
+  { label: "Kontak", href: "/kontak" },
+];
+
+/**
+ * Angka pembuka. Semuanya terukur pada stack referensi kami — bukan target,
+ * bukan rata-rata industri. Catatan itu ditampilkan di situs, bukan hanya di
+ * komentar ini.
+ */
+export const proof = {
+  note: "Diukur pada stack referensi ATHERA, bukan estimasi.",
+  items: [
+    { value: 0.16, suffix: " dtk", decimals: 2, label: "ERP → gudang data" },
+    { value: 698, suffix: "", decimals: 0, label: "Kolom terklasifikasi" },
+    { value: 292, suffix: "", decimals: 0, label: "Uji data hijau" },
+    { value: 0, suffix: "", decimals: 0, label: "Kebocoran antar klien" },
+  ],
+};
+
+export const stack = [
+  "Odoo 19",
+  "PostgreSQL 16",
+  "Logical replication",
+  "dbt",
+  "Next.js",
+  "TypeScript",
+  "Docker",
+  "Caddy",
+  "Prometheus",
+  "Grafana",
+  "Loki",
+  "Alertmanager",
+];
 
 export type Service = {
   id: string;
@@ -35,51 +74,51 @@ export type Service = {
 
 export const services: Service[] = [
   {
-    id: "odoo",
-    name: "Implementasi Odoo ERP",
+    id: "implementasi",
+    name: "Implementasi & migrasi",
     summary:
-      "Menyatukan penjualan, pembelian, stok, dan keuangan ke satu sistem — tanpa memaksa tim Anda mengubah cara kerja yang sudah terbukti jalan.",
+      "Memetakan proses yang sebenarnya berjalan, memindahkan data lama dengan angka pembanding, lalu merilis bertahap sampai dipakai sungguhan.",
     points: [
-      "Pemetaan proses bisnis sebelum satu baris konfigurasi ditulis",
-      "Migrasi data dari spreadsheet dan sistem lama",
-      "Kustomisasi modul sesuai alur kerja, bukan sebaliknya",
+      "Pemetaan proses sebelum satu baris konfigurasi ditulis",
+      "Migrasi data yang direkonsiliasi, bukan diperkirakan",
+      "Rilis bertahap yang tiap tahapnya sudah bisa dipakai",
       "Pelatihan tim dan pendampingan setelah go-live",
     ],
   },
   {
-    id: "insight",
-    name: "Ethera Insight",
+    id: "aplikasi",
+    name: "Aplikasi web custom",
     summary:
-      "Dashboard analitik yang menarik data dari ERP, aplikasi operasional, dan sumber lain, lalu menyajikannya dalam satu layar yang bisa dipercaya.",
+      "Untuk kebutuhan yang tidak muat di produk jadi: portal internal, sistem persetujuan, dan aplikasi lini bisnis yang terhubung ke sistem yang sudah ada.",
     points: [
-      "Indikator kunci yang relevan dengan keputusan harian",
-      "Data tergabung dari beberapa sumber sekaligus",
-      "Akses berjenjang untuk manajemen dan operasional",
-      "Laporan terjadwal langsung ke email",
-    ],
-  },
-  {
-    id: "custom",
-    name: "Aplikasi Web Custom",
-    summary:
-      "Ketika kebutuhan Anda tidak muat di produk jadi. Kami membangun aplikasi yang pas dengan proses Anda, bukan sekadar yang cepat dirilis.",
-    points: [
-      "Portal internal, sistem approval, dan aplikasi lini bisnis",
-      "Integrasi dengan sistem yang sudah berjalan",
+      "Terintegrasi dengan ERP dan sistem yang sudah berjalan",
       "Dibangun dengan teknologi yang mudah dirawat jangka panjang",
-      "Dokumentasi dan serah terima kode yang jelas",
+      "Kode dan dokumentasi diserahkan kepada Anda",
+      "Dirancang untuk dipakai di lapangan, termasuk di ponsel",
     ],
   },
   {
-    id: "infra",
-    name: "Infrastruktur & Operasional",
+    id: "infrastruktur",
+    name: "Infrastruktur & operasional",
     summary:
       "Server, deployment, pemantauan, backup, dan email domain. Bagian yang tidak terlihat pelanggan, tapi paling terasa saat bermasalah.",
     points: [
       "Penyiapan dan pengerasan server produksi",
+      "Backup terjadwal beserta gladi pemulihannya",
+      "Pemantauan dengan peringatan yang benar-benar berbunyi",
       "Mail server domain sendiri dengan SPF, DKIM, dan DMARC",
-      "Backup terjadwal beserta uji pemulihannya",
-      "Pemantauan dan penanganan insiden",
+    ],
+  },
+  {
+    id: "audit",
+    name: "Audit & penyelamatan proyek",
+    summary:
+      "Untuk sistem yang sudah ada tetapi berhenti di tengah jalan, atau datanya sudah tidak dipercaya tim sendiri.",
+    points: [
+      "Menilai apa yang dipakai, apa yang dimatikan diam-diam",
+      "Menemukan sumber angka yang saling bertentangan",
+      "Rencana perbaikan berurutan beserta biayanya",
+      "Bisa berhenti di rekomendasi — tidak wajib lanjut ke implementasi",
     ],
   },
 ];
@@ -120,15 +159,15 @@ export const processSteps: ProcessStep[] = [
 export const about = {
   title: "Kami membangun untuk dipakai, bukan untuk dipresentasikan",
   paragraphs: [
-    "Athera Digital Solution membantu perusahaan menengah membereskan tulang punggung operasionalnya: ERP yang benar-benar mencerminkan proses bisnis, dashboard yang datanya bisa dipertanggungjawabkan, dan aplikasi internal yang tidak menambah pekerjaan baru.",
+    "Athera Digital Solution membantu perusahaan menengah membereskan tulang punggung operasionalnya: ERP yang benar-benar mencerminkan proses bisnis, dasbor yang datanya bisa dipertanggungjawabkan, dan otomatisasi yang tidak menambah pekerjaan baru.",
     "Kami mengerjakan keseluruhannya — dari pemetaan proses, pengembangan, sampai server dan email yang menopangnya. Sehingga tidak ada bagian yang saling menunggu, dan tidak ada yang menyalahkan pihak lain saat ada masalah.",
+    "Cara kerja kami punya satu kebiasaan yang jarang: setiap klaim teknis di situs ini punya pengukuran atau berkas di belakangnya, dan hal yang belum terbukti kami tulis sebagai belum terbukti. Itu standar yang sama yang kami pakai saat melaporkan status proyek Anda.",
   ],
-  // TODO: ganti dengan poin pembeda yang benar-benar mencerminkan Athera Digital.
   highlights: [
     {
       title: "Satu pihak, satu tanggung jawab",
       description:
-        "Aplikasi, data, dan infrastruktur ditangani tim yang sama, sehingga tidak ada celah antar vendor.",
+        "Aplikasi, data, dan infrastruktur ditangani tim yang sama, sehingga tidak ada celah antar vendor saat terjadi masalah.",
     },
     {
       title: "Bertahap dan terukur",
@@ -140,6 +179,59 @@ export const about = {
       description:
         "Setelah go-live, sistem tetap dipantau, di-backup, dan disesuaikan mengikuti perubahan bisnis.",
     },
+    {
+      title: "Terbukti, bukan diklaim",
+      description:
+        "Backup yang belum pernah diuji pulih bukan backup, dan alarm yang belum pernah berbunyi bukan pemantauan. Keduanya kami uji sampai gagal dulu.",
+    },
+  ],
+};
+
+/**
+ * Halaman kepatuhan. Bagian `gaps` disengaja: menyebut yang belum otomatis
+ * lebih dulu adalah bagian dari posisi kepatuhan itu sendiri.
+ */
+export const compliance = {
+  eyebrow: "UU 27/2022",
+  title: "Pelindungan data pribadi yang berlaku di lapisan data, bukan di halaman kebijakan",
+  description:
+    "Kewajiban pengendali data menurut UU Pelindungan Data Pribadi kami terjemahkan menjadi mekanisme yang tidak bisa lupa dijalankan: klasifikasi wajib, penyamaran saat pemuatan, dan hak akses yang ditegakkan mesin database.",
+  classes: [
+    { name: "Publik", meaning: "Sudah bersifat publik", action: "Disimpan apa adanya" },
+    { name: "Internal", meaning: "Data bisnis, bukan tentang orang", action: "Disimpan apa adanya" },
+    { name: "Pribadi", meaning: "Data pribadi umum yang mengidentifikasi orang", action: "Disamarkan satu arah" },
+    { name: "Spesifik", meaning: "Kesehatan, biometrik, keuangan, keyakinan", action: "Disamarkan; teks bebas dikosongkan" },
+    { name: "Rahasia", meaning: "Kredensial dan token", action: "Tidak pernah diambil sama sekali" },
+  ],
+  guarantees: [
+    {
+      title: "Kolom tanpa klasifikasi tidak bisa mendarat",
+      body: "Daftar kolom yang direplikasi diturunkan dari registri klasifikasi, dan peran pemuat tidak punya hak membuat tabel baru. Kolom yang belum diklasifikasi tidak akan tersalin diam-diam tanpa penyamaran — ia tidak tersalin sama sekali, dan itu memicu pemeriksaan.",
+    },
+    {
+      title: "Penyamaran terjadi saat memuat, bukan sesudahnya",
+      body: "Nilai disamarkan sebelum perintah simpan dijalankan. Tidak ada jeda waktu ketika gudang memegang data pribadi dalam bentuk terbaca, dan tidak ada proses pembersihan yang bisa gagal berjalan.",
+    },
+    {
+      title: "Kredensial tidak ikut tersalin",
+      body: "Kolom berkelas rahasia tidak pernah masuk daftar yang diambil, sehingga tidak hadir sebagai kolom di gudang — bukan hadir dalam keadaan kosong.",
+    },
+    {
+      title: "Akses tercatat",
+      body: "Pembacaan data di gudang dicatat, dan pemisahan antar klien ditegakkan oleh mesin database dengan peran yang tidak berhak melewatinya.",
+    },
+  ],
+  gaps: [
+    {
+      title: "Penghapusan atas permintaan subjek data belum otomatis",
+      body: "Permintaan penghapusan diproses lewat prosedur tertulis yang dijalankan operator, termasuk perambatannya ke gudang data. Kami menyebutnya di sini karena kewajiban yang diselesaikan orang lewat prosedur bukan hal yang sama dengan kewajiban yang diselesaikan kode — dan pembeda antara keduanya baru terasa saat permintaannya datang.",
+    },
+  ],
+  numbers: [
+    { value: "698", label: "Kolom terdaftar klasifikasinya" },
+    { value: "5", label: "Kelas data" },
+    { value: "27", label: "Kolom data pribadi disamarkan" },
+    { value: "5", label: "Kolom rahasia tidak diambil" },
   ],
 };
 
@@ -147,11 +239,15 @@ export const contact = {
   title: "Mari bicara soal kebutuhan Anda",
   description:
     "Ceritakan kondisi sistem Anda sekarang dan apa yang paling menghambat. Kami akan menanggapi dengan gambaran pendekatan yang masuk akal — bukan langsung penawaran harga.",
+  points: [
+    "Balasan pertama berisi pertanyaan, bukan proposal 40 halaman.",
+    "Kalau kebutuhan Anda lebih murah diselesaikan tanpa kami, kami akan mengatakannya.",
+    "Audit bisa berhenti di rekomendasi tanpa kewajiban lanjut.",
+  ],
 };
 
-export const nav = [
-  { label: "Layanan", href: "#layanan" },
-  { label: "Pendekatan", href: "#pendekatan" },
-  { label: "Tentang", href: "#tentang" },
-  { label: "Kontak", href: "#kontak" },
-];
+export const finalCta = {
+  title: "Sistem yang rapi dimulai dari satu percakapan",
+  description:
+    "Tidak perlu menyiapkan dokumen apa pun. Cukup ceritakan apa yang paling sering membuat tim Anda kembali ke spreadsheet.",
+};

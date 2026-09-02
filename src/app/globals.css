@@ -1,29 +1,34 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --surface: #f6f7f9;
-  --surface-raised: #ffffff;
-  --foreground: #10151c;
-  --muted: #5a6572;
-  --border: #e3e7ec;
-  --accent: #0f766e;
-  --accent-soft: #d7f2ee;
-  --accent-contrast: #ffffff;
-}
+/* ==========================================================================
+   Tema
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b0f14;
-    --surface: #10161d;
-    --surface-raised: #141c25;
-    --foreground: #e8edf2;
-    --muted: #97a3b1;
-    --border: #212c38;
-    --accent: #2dd4bf;
-    --accent-soft: #10312e;
-    --accent-contrast: #04211e;
-  }
+   Situs ini sengaja gelap saja. Bukan karena tren: seluruh bahasa visualnya
+   (garis aliran data, simpul yang berdenyut, kisi latar) bersandar pada cahaya
+   di atas gelap, dan versi terangnya akan menjadi desain lain yang harus
+   dirawat terpisah. `color-scheme: dark` memberi tahu browser hal yang sama,
+   sehingga kontrol bawaan (scrollbar, form) ikut gelap.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  --background: #05070a;
+  --surface: #090d13;
+  --surface-raised: #0c121a;
+  --foreground: #e7eef7;
+  --muted: #8a97a8;
+  --border: #1a2430;
+  --border-strong: #26333f;
+
+  --accent: #2dd4bf;
+  --accent-2: #38bdf8;
+  --accent-3: #818cf8;
+  --accent-soft: #0c2b28;
+  --accent-contrast: #04211e;
+
+  --ok: #4ade80;
+  --warn: #fbbf24;
 }
 
 @theme inline {
@@ -33,9 +38,14 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
   --color-accent-soft: var(--accent-soft);
   --color-accent-contrast: var(--accent-contrast);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -49,8 +59,299 @@ html {
   scroll-behavior: smooth;
 }
 
+::selection {
+  background: color-mix(in oklab, var(--accent) 30%, transparent);
+  color: var(--foreground);
+}
+
+/* ==========================================================================
+   Animasi
+
+   Semua keyframes ada di sini, dan SEMUANYA dimatikan oleh blok
+   prefers-reduced-motion di bagian bawah berkas. Kalau menambah animasi baru,
+   tambahkan juga di sana — situs ini harus tetap terbaca penuh tanpa satu pun
+   gerakan.
+   ========================================================================== */
+
+@keyframes ath-flow {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+@keyframes ath-packet {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  8%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes ath-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes ath-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 60px 60px;
+  }
+}
+
+@keyframes ath-aurora {
+  0%,
+  100% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(6%, 3%, 0) scale(1.12);
+  }
+  66% {
+    transform: translate3d(-3%, 6%, 0) scale(0.94);
+  }
+}
+
+@keyframes ath-scan {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(900%);
+  }
+}
+
+@keyframes ath-caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes ath-beam {
+  0% {
+    transform: translate3d(0, -100%, 0);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 100%, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes ath-beam-x {
+  0% {
+    transform: translate3d(-100%, 0, 0);
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(100%, 0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes ath-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ath-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes ath-sheen {
+  from {
+    transform: translateX(-120%);
+  }
+  to {
+    transform: translateX(220%);
+  }
+}
+
+@keyframes ath-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Kisi latar. Dipakai sebagai lapisan dekoratif, selalu aria-hidden. */
+.ath-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--border) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--border) 70%, transparent) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: ath-drift 14s linear infinite;
+}
+
+.ath-aurora {
+  animation: ath-aurora 22s ease-in-out infinite;
+}
+
+.ath-scan {
+  animation: ath-scan 7s linear infinite;
+}
+
+.ath-caret {
+  animation: ath-caret 1.05s steps(1) infinite;
+}
+
+.ath-marquee {
+  animation: ath-marquee 38s linear infinite;
+}
+
+.ath-beam {
+  animation: ath-beam 5.5s ease-in-out infinite;
+}
+
+@media (min-width: 1024px) {
+  .ath-beam {
+    animation-name: ath-beam-x;
+  }
+}
+
+.ath-spin {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+  animation: ath-spin 26s linear infinite;
+}
+
+.ath-pulse {
+  animation: ath-pulse 2.6s ease-in-out infinite;
+}
+
+.ath-flow {
+  stroke-dasharray: 6 10;
+  animation: ath-flow 12s linear infinite;
+}
+
+.ath-packet {
+  offset-rotate: 0deg;
+  animation: ath-packet 4.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+/* Kilau tipis yang menyapu kartu saat disentuh kursor. */
+.ath-sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    color-mix(in oklab, var(--accent) 12%, transparent) 45%,
+    transparent 70%
+  );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ath-sheen:hover::after {
+  opacity: 1;
+  animation: ath-sheen 0.9s ease-out;
+}
+
+/* Muncul saat masuk viewport — TANPA JavaScript.
+
+   Memakai scroll-driven animation (`animation-timeline: view()`). Dijaga
+   `@supports` dengan sengaja: di browser yang belum mendukungnya, aturan ini
+   tidak pernah aktif sehingga isi halaman tampil apa adanya, penuh dan
+   terbaca. Itu sebabnya nilai awalnya tidak ditulis sebagai `opacity: 0` di
+   luar blok ini — sebuah versi ber-JavaScript akan menyembunyikan konten
+   secara permanen kalau skripnya gagal dimuat, dan itu harga yang tidak
+   sepadan untuk sebuah efek muncul.
+   ========================================================================== */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .ath-reveal {
+      animation: ath-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 70%;
+    }
+
+    .ath-reveal-1 {
+      animation-range: entry 0% entry 85%;
+    }
+
+    .ath-reveal-2 {
+      animation-range: entry 0% cover 12%;
+    }
+
+    .ath-reveal-3 {
+      animation-range: entry 0% cover 20%;
+    }
+  }
+}
+
+.ath-rise {
+  animation: ath-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .ath-grid,
+  .ath-aurora,
+  .ath-scan,
+  .ath-caret,
+  .ath-marquee,
+  .ath-beam,
+  .ath-spin,
+  .ath-pulse,
+  .ath-flow,
+  .ath-packet,
+  .ath-rise,
+  .ath-sheen:hover::after {
+    animation: none !important;
+  }
+
+  .ath-scan {
+    display: none;
+  }
+
+  .ath-reveal {
+    animation: none !important;
+    opacity: 1;
   }
 }
