@@ -13,6 +13,7 @@ import {
   compliance,
   hero,
   processSteps,
+  appShortcuts,
   proof,
   services,
   stack,
@@ -107,6 +108,23 @@ export default function Home() {
             <ProductCard key={product.slug} product={product} />
           ))}
         </ul>
+      </Section>
+
+      {/* Shortcut per produk ke domain app masing-masing */}
+      <Section>
+        <SectionHeading eyebrow={appShortcuts.eyebrow} title={appShortcuts.title} />
+        <div className="mt-10 flex flex-wrap gap-4">
+          {appShortcuts.items.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="inline-flex flex-col rounded-2xl border border-border bg-surface-raised px-6 py-4 transition-colors hover:border-accent/40"
+            >
+              <span className="font-medium text-accent">{item.label}</span>
+              <span className="text-sm text-muted">{item.note}</span>
+            </a>
+          ))}
+        </div>
       </Section>
 
       {/* Cara kerja */}

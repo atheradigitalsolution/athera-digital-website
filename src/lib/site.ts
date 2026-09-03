@@ -282,6 +282,15 @@ export const registration = {
     "Kami membacanya sendiri, bukan lewat autoresponder. Balasan pertama biasanya berisi pertanyaan agar kami tidak menawarkan sesuatu yang belum tentu Anda butuhkan.",
 };
 
+export const appShortcuts = {
+  eyebrow: "Buka aplikasi",
+  title: "Sudah menjadi klien? Langsung buka produk Anda",
+  items: [
+    { label: "Buka Insight", href: "https://insight.athera-digital.com", note: "Dasbor & analitik" },
+    { label: "Buka Odoo", href: "https://odoo.athera-digital.com", note: "ERP Anda" },
+  ],
+};
+
 export const finalCta = {
   title: "Sistem yang rapi dimulai dari satu percakapan",
   description:
