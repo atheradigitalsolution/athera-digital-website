@@ -29,6 +29,7 @@ export const hero = {
 
 export const nav = [
   { label: "Produk", href: "/produk" },
+  { label: "Harga", href: "/harga" },
   { label: "Kepatuhan", href: "/kepatuhan" },
   { label: "Layanan", href: "/layanan" },
   { label: "Tentang", href: "/tentang" },
@@ -280,6 +281,48 @@ export const registration = {
   successTitle: "Terima kasih, pendaftaran Anda sudah masuk.",
   successBody:
     "Kami membacanya sendiri, bukan lewat autoresponder. Balasan pertama biasanya berisi pertanyaan agar kami tidak menawarkan sesuatu yang belum tentu Anda butuhkan.",
+};
+
+/**
+ * Teks halaman harga. NOMINALNYA TIDAK ADA DI SINI dan tidak boleh ditulis di
+ * sini.
+ *
+ * Angka harga dibaca saat request dari katalog harga platform lewat
+ * `src/lib/pricing.ts`; sumber kebenarannya adalah registry yang hanya bisa
+ * disunting dari konsol admin. Kalau harga berubah, ia berubah di sana dan
+ * halaman ini ikut berubah tanpa deploy. Menyalin nominalnya ke berkas ini akan
+ * membuat situs menampilkan angka yang tidak bisa dipertanggungjawabkan.
+ */
+export const pricing = {
+  eyebrow: "Harga",
+  title: "Harga langganan yang bisa Anda hitung sebelum menghubungi kami",
+  description:
+    "Angka di halaman ini dibaca langsung dari katalog harga kami saat halaman dibuka, bukan disalin ke dalam brosur yang lupa diperbarui. Yang belum berupa angka kami tulis apa adanya sebagai belum berupa angka.",
+  /** Ditempel di belakang nominal yang memang berulang tiap bulan. */
+  perMonth: "/ bulan",
+  /** Label paket untuk produk yang memang dijual custom. */
+  customPlanLabel: "Disusun per kebutuhan",
+  /**
+   * Keputusan yang sudah diambil: biaya implementasi tidak pernah ditampilkan
+   * sebagai nominal di halaman publik, karena ia memang bergantung ruang
+   * lingkup. Baris ini wajib ada di setiap kartu.
+   */
+  implementation: "Biaya implementasi: menyesuaikan kebutuhan — Hubungi kami",
+  ctaLabel: "Diskusikan kebutuhan",
+  suite: {
+    eyebrow: "Paket gabungan",
+    /** Dipakai hanya bila katalog tidak terbaca; nama resminya datang dari registry. */
+    fallbackName: "ATHERA Suite",
+    description:
+      "Ketiga produk dalam satu langganan. Harganya tidak dipasang di muka karena paket ini memuat ATHERA Agent, yang masih pratinjau terbatas dan disiapkan per klien — jadi angkanya disusun mengikuti ruang lingkup Anda, bukan dibulatkan dari daftar.",
+  },
+  notesTitle: "Yang perlu Anda tahu sebelum membandingkan angka",
+  notes: [
+    "Harga di atas adalah langganan bulanan per tenant — satu lingkungan terpisah untuk perusahaan Anda, bukan per pengguna.",
+    "Biaya implementasi terpisah dari langganan dan dihitung sekali di awal, mengikuti ruang lingkup migrasi dan penyesuaian yang disepakati.",
+    "Angka di halaman ini dibaca dari katalog harga kami saat halaman dibuka. Bila katalog sedang tidak terbaca, kartunya berbunyi \u201cHubungi kami\u201d \u2014 kami memilih itu daripada menampilkan angka lama.",
+    "Belum ada yang mengikat sampai ruang lingkupnya disepakati tertulis.",
+  ],
 };
 
 export const appShortcuts = {

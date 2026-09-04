@@ -128,6 +128,18 @@ export default function ProdukPage() {
             sekarang. Kalau jawabannya ternyata &ldquo;belum perlu apa-apa dari
             kami&rdquo;, itu juga jawaban yang akan kami sampaikan.
           </p>
+          <Link
+            href="/harga"
+            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-2"
+          >
+            Lihat harga langganan
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            >
+              →
+            </span>
+          </Link>
         </Card>
       </Section>
 

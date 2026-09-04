@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Definisi agent lokal: memuat topologi runtime internal (nama database tenant,
+# path deploy, porta loopback). Repo ini publik — jangan pernah ikut ter-commit.
+.claude/
