@@ -11,7 +11,14 @@ export const company = {
   domain: "athera-digital.com",
   tagline: "Sistem bisnis yang benar-benar dipakai tim Anda",
   email: "info@athera-digital.com",
-  // TODO: ganti dengan nomor dan alamat asli, atau hapus barisnya kalau belum mau ditampilkan.
+  // `null` ADALAH KEADAAN YANG SUDAH DITANGANI, BUKAN PEKERJAAN YANG TERTINGGAL.
+  // Kontak (`/kontak`) dan footer keduanya menjaga nilai ini sebelum merender, jadi
+  // tidak ada baris kosong dan tidak ada tulisan "null" yang muncul di layar —
+  // diperiksa pada HTML terender, bukan disimpulkan dari kode.
+  // Isi HANYA dengan nomor dan alamat yang benar-benar dijawab orang. Nomor
+  // karangan di halaman kontak adalah kegagalan yang lebih buruk daripada tidak
+  // ada nomor sama sekali: pengunjung menelepon, tidak ada yang mengangkat, dan
+  // seluruh sisa situs ikut kehilangan kredibilitasnya.
   phone: null as string | null,
   address: null as string | null,
 };
@@ -29,6 +36,10 @@ export const hero = {
 
 export const nav = [
   { label: "Produk", href: "/produk" },
+  // Fondasi bersama di bawah ketiga produk. Ia ada di nav dan bukan hanya di
+  // footer karena isinya justru pembeda terkuat kami, dan situs ini tidak pernah
+  // menyebutnya sama sekali sampai 2026-09-05.
+  { label: "Platform", href: "/platform" },
   { label: "Harga", href: "/harga" },
   { label: "Kepatuhan", href: "/kepatuhan" },
   { label: "Layanan", href: "/layanan" },
@@ -325,6 +336,22 @@ export const pricing = {
   ],
 };
 
+/**
+ * Pintasan bagi klien yang sudah punya akun.
+ *
+ * KEDUANYA MENUNJUK KE PINTU, BUKAN KE HALAMAN LOGIN, DAN ITU BENAR. Diperiksa
+ * 2026-09-05: membuka `odoo.<domain>` dari peramban menjawab 303 ke halaman login
+ * HTML gerbang; `insight.<domain>` menjawab 307 ke `/login?next=/`. Keduanya
+ * mendarat di formulir masuk yang sebenarnya.
+ *
+ * Sebuah audit sempat melaporkan bahwa tombol Odoo "memuntahkan JSON 401 mentah
+ * ke pengunjung". Itu terlihat dengan `curl` polos, yang tidak mengirim
+ * `Accept: text/html`; gerbang menjawab JSON untuk klien API dan mengalihkan
+ * peramban ke login. Perilaku itu disengaja dan sudah ada di gerbangnya.
+ * JANGAN menggantinya dengan tautan langsung ke halaman login: pintu inilah yang
+ * tahu ke mana pengunjung harus kembali setelah masuk, dan alamat login bisa
+ * berpindah tanpa memberi tahu berkas ini.
+ */
 export const appShortcuts = {
   eyebrow: "Buka aplikasi",
   title: "Sudah menjadi klien? Langsung buka produk Anda",
@@ -338,4 +365,123 @@ export const finalCta = {
   title: "Sistem yang rapi dimulai dari satu percakapan",
   description:
     "Tidak perlu menyiapkan dokumen apa pun. Cukup ceritakan apa yang paling sering membuat tim Anda kembali ke spreadsheet.",
+};
+
+/**
+ * Halaman yang isinya adalah ketiadaan isi — dan mengatakannya terus terang.
+ *
+ * `/blog`, `/studi-kasus`, dan `/karir` menjawab 404 sampai 2026-09-05, dan tidak
+ * satu pun ditautkan dari mana-mana: mereka bukan tautan rusak, melainkan alamat
+ * yang dicoba orang dan tidak dijawab.
+ *
+ * KENAPA BUKAN "SEGERA HADIR". Halaman kosong berhiaskan janji sama tidak
+ * bergunanya dengan 404, dan ia menambah satu hal: kesan bahwa ada yang sedang
+ * disiapkan. Ketiga halaman di bawah menyatakan apa yang tidak ada, menyebut
+ * alasannya, lalu menunjuk hal yang memang ada.
+ *
+ * KENAPA STUDI KASUS TIDAK DIKARANG. Cerita tentang klien yang tidak ada adalah
+ * klaim yang tidak boleh kami buat, dan ia satu-satunya jenis konten di situs ini
+ * yang tidak bisa diperbaiki belakangan kalau terlanjur salah — pembaca yang tahu
+ * bahwa satu klien fiktif tidak akan percaya angka mana pun di halaman lain.
+ *
+ * Ketiganya `noindex` dan tidak masuk sitemap: tidak ada yang perlu diperingkat.
+ * Ketika isinya sudah ada, hapus `robots` di halamannya dan masukkan rutenya ke
+ * `companyRoutes` pada `sitemap.ts`.
+ */
+export const thinPages = {
+  blog: {
+    slug: "/blog",
+    title: "Catatan teknis",
+    lead: "Belum ada tulisan yang kami terbitkan di sini.",
+    body: [
+      "Kami lebih dulu menulis dokumentasi yang dipakai untuk membangun dan merawat sistem klien, dan itu belum berbentuk tulisan yang enak dibaca umum. Menerbitkan artikel demi mengisi halaman akan menghabiskan waktu yang sekarang dipakai untuk pekerjaan yang dibayar klien.",
+      "Kalau Anda mencari penjelasan teknis tentang cara kerja produk kami, halaman produk memuatnya lengkap dengan angka dan batasannya — termasuk yang belum aktif.",
+    ],
+    links: [
+      { label: "Cara kerja tiap produk", href: "/produk" },
+      { label: "Fondasi bersama platform", href: "/platform" },
+      { label: "Penanganan data pribadi", href: "/kepatuhan" },
+    ],
+  },
+  studiKasus: {
+    slug: "/studi-kasus",
+    title: "Studi kasus",
+    lead: "Kami belum menerbitkan studi kasus klien, dan kami tidak akan mengarangnya.",
+    body: [
+      "Studi kasus yang jujur menuntut izin klien, angka sebelum dan sesudah yang bisa dipertanggungjawabkan, dan waktu pemakaian yang cukup panjang untuk punya arti. Belum ada yang memenuhi ketiganya, jadi halaman ini kosong dari cerita klien.",
+      "Menuliskan cerita tentang klien yang tidak ada akan merusak satu-satunya hal yang membuat angka di situs ini berguna. Setiap angka di halaman produk kami berasal dari stack referensi kami sendiri dan dilabeli begitu — bukan rata-rata industri, bukan estimasi, dan bukan hasil klien yang belum ada.",
+      "Kalau Anda ingin menilai kami sebelum ada studi kasus, mintalah demo di atas data contoh Anda sendiri. Itu bukti yang lebih baik daripada cerita siapa pun.",
+    ],
+    links: [
+      { label: "Angka yang bisa kami tunjukkan hari ini", href: "/produk" },
+      { label: "Minta demo di atas data Anda", href: "/kontak" },
+    ],
+  },
+  karir: {
+    slug: "/karir",
+    title: "Karier",
+    lead: "Tidak ada lowongan terbuka saat ini.",
+    body: [
+      "Kami tim kecil, dan menambah orang adalah keputusan yang kami ambil ketika pekerjaannya sudah pasti ada — bukan untuk mengisi daftar lowongan. Ketika ada posisi terbuka, ia akan muncul di halaman ini beserta lingkup kerja dan rentang gajinya.",
+      "Lamaran terbuka tetap kami baca. Kirimkan apa yang pernah Anda bangun dan bagian mana yang paling sulit; itu lebih berguna bagi kami daripada daftar teknologi.",
+    ],
+    links: [{ label: "Kirim lamaran terbuka", href: "mailto:" }],
+  },
+};
+
+/**
+ * Fondasi bersama di bawah ketiga produk.
+ *
+ * KENAPA HALAMAN INI ADA, DAN KENAPA IA BUKAN PRODUK KEEMPAT. Peta platform kami
+ * menyebut enam komponen; situs ini menjual tiga produk. Tiga sisanya adalah situs
+ * ini sendiri, gerbang login, dan konsol pengelolaan langganan — tidak satu pun
+ * dijual terpisah. Menerbitkannya sebagai kartu di /produk dan /harga berarti
+ * mengarang katalog: pengunjung akan mengira ada yang bisa dibeli, dan salah satu
+ * di antaranya (portal penagihan sisi klien) memang belum bisa dipakai klien.
+ *
+ * Yang benar-benar hilang dari situs ini bukan tiga kartu produk, melainkan
+ * penjelasan tentang fondasi yang ketiganya duduki — dan justru di situlah
+ * pembeda kami. Halaman ini menyebut juga bagian yang BELUM aktif, karena daftar
+ * kemampuan yang hanya memuat yang berhasil adalah daftar yang tidak bisa dipakai
+ * untuk mengambil keputusan.
+ */
+export const platform = {
+  eyebrow: "Fondasi",
+  title: "Satu fondasi di bawah ketiga produk",
+  description:
+    "Produk kami tidak berdiri sendiri-sendiri. Di bawahnya ada satu lapisan yang menangani siapa Anda, data siapa yang boleh Anda lihat, dan apa yang terjadi ketika sesuatu rusak. Bagian ini jarang muncul di brosur karena tidak terlihat — dan ia yang paling menentukan apakah sistemnya masih bisa dipercaya di tahun kedua.",
+  pillars: [
+    {
+      title: "Satu login untuk semua layanan",
+      body: "Masuk sekali, lalu buka dasbor maupun ERP tanpa membuat kata sandi kedua. Kunci penandatangan berputar tanpa memaksa semua orang keluar, dan pencabutan akses berlaku pada permintaan berikutnya — bukan menunggu sesi kedaluwarsa dengan sendirinya.",
+      status: "Berjalan",
+    },
+    {
+      title: "Akses ditutup secara bawaan",
+      body: "Langganan yang berhenti menutup akses ke aplikasinya, dan itu diperiksa ulang setiap permintaan, bukan sekali saat login. Sebuah sesi yang sudah berjalan tidak menjadi kunci yang berlaku selamanya.",
+      status: "Berjalan",
+    },
+    {
+      title: "Pemisahan antar klien di tingkat penyimpanan",
+      body: "Data perusahaan Anda dipisahkan oleh mesin database, bukan oleh klausa penyaring yang bisa terlupa saat seseorang menulis kueri baru. Peran yang melayani dasbor tidak punya hak melewatinya.",
+      status: "Berjalan",
+    },
+    {
+      title: "Lingkungan terpisah per perusahaan",
+      body: "Setiap klien mendapat lingkungan sendiri, dibuat dari satu prosedur yang sama dan tercatat di log yang tidak bisa disunting — termasuk siapa yang membuatnya dan kapan.",
+      status: "Berjalan",
+    },
+    {
+      title: "Backup yang pemulihannya diuji",
+      body: "Basis data dan filestore, keduanya, dengan manifest dan checksum, lalu dipulihkan ke salinan untuk dibuktikan. Backup yang belum pernah dipulihkan bukan backup, melainkan asumsi.",
+      status: "Berjalan",
+    },
+    {
+      title: "Portal penagihan sisi klien",
+      body: "Melihat tagihan dan riwayat pembayaran sendiri, tanpa menghubungi kami. Siklus penagihannya sudah berjalan di sisi kami; halaman untuk klien belum dibuka, dan kami menyebutkannya di sini alih-alih menunggu ditanya.",
+      status: "Belum dibuka",
+    },
+  ],
+  closing:
+    "Bagian yang bertanda “Belum dibuka” memang belum bisa Anda pakai. Kami menuliskannya karena daftar kemampuan yang hanya memuat yang berhasil tidak bisa dipakai siapa pun untuk mengambil keputusan.",
 };

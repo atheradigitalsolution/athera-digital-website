@@ -40,6 +40,23 @@ export default async function HargaPage() {
   const plans = await getPublishedPlans();
   const suite = planByCode(plans, "suite");
 
+  // KATALOG ADALAH HALAMAN, dan itu sebuah invarian, bukan kebetulan.
+  //
+  // Sebelum ini halaman merender tiga kartu produk plus `suite`, dipilih lewat
+  // peta lokal di atas. Katalog menerbitkan lima paket. Dua di antaranya —
+  // `trial` dan `odoo_insight` — terbit ke API publik dan tidak pernah muncul di
+  // halaman mana pun: harga yang bisa dibaca siapa saja yang membuka API, dan
+  // tidak bisa dilihat pengunjung yang datang untuk membandingkan harga.
+  //
+  // Peta lokal tidak bisa mencegah itu terulang; ia justru sumbernya. Bagian di
+  // bawah merender SISA — setiap paket terbit yang belum tampil di atas — sehingga
+  // menambahkan paket di konsol admin cukup untuk membuatnya terlihat, dan paket
+  // yang tidak ingin ditampilkan dinonaktifkan di konsol, bukan didiamkan di sini.
+  const shownCodes = new Set<string>(
+    [...Object.values(PLAN_CODE).filter((code): code is string => code !== null), "suite"],
+  );
+  const otherPlans = plans.filter((plan) => !shownCodes.has(plan.code));
+
   return (
     <>
       <section className="relative overflow-hidden border-b border-border">
@@ -175,6 +192,42 @@ export default async function HargaPage() {
           </div>
         </Card>
       </Section>
+
+      {otherPlans.length > 0 ? (
+        <Section>
+          <SectionHeading
+            eyebrow="Kombinasi lain"
+            title="Paket gabungan lain di katalog kami"
+            description="Dibaca dari katalog yang sama dengan kartu di atas. Bila sebuah paket terbit di katalog, ia muncul di sini — tidak ada paket yang bisa terbit tanpa terlihat."
+          />
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {otherPlans.map((plan) => (
+              <Card key={plan.code} as="li" className="ath-reveal flex flex-col p-7">
+                <h2 className="text-lg font-semibold tracking-tight">{plan.display_name}</h2>
+                <p className="mt-2 text-xs uppercase tracking-wider text-muted">
+                  {plan.products.join(" · ")}
+                </p>
+                <p className="mt-6 flex flex-wrap items-baseline gap-x-2">
+                  <span className="text-2xl font-semibold tracking-tight">
+                    {formatPrice(plan.price_month, plan.currency)}
+                  </span>
+                  {isRecurringAmount(plan) ? (
+                    <span className="text-sm text-muted">{pricing.perMonth}</span>
+                  ) : null}
+                </p>
+                <div className="mt-7 flex flex-1 items-end">
+                  <Link
+                    href="/kontak"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-accent transition-colors hover:text-accent-2"
+                  >
+                    {pricing.ctaLabel} <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </ul>
+        </Section>
+      ) : null}
 
       <Section>
         <SectionHeading title={pricing.notesTitle} />

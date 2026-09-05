@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { company, nav } from "@/lib/site";
+import { company, nav, thinPages } from "@/lib/site";
 import { products } from "@/lib/products";
 import { Wordmark } from "@/components/wordmark";
 
@@ -22,7 +22,7 @@ export function SiteFooter() {
             </p>
           </div>
 
-          <div className="grid gap-10 sm:grid-cols-3 sm:gap-14">
+          <div className="grid gap-10 sm:grid-cols-2 sm:gap-14 lg:grid-cols-4">
             <div>
               <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
                 Produk
@@ -53,6 +53,28 @@ export function SiteFooter() {
                       className="text-muted transition-colors hover:text-foreground"
                     >
                       {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Perusahaan. Ketiga halaman ini menjawab 404 sampai 2026-09-05 dan
+                tidak ditautkan dari mana pun; sekarang alamatnya dijawab, dan
+                ditautkan DARI SINI dan bukan dari nav utama — isinya adalah
+                pernyataan bahwa isinya belum ada, dan itu bukan etalase. */}
+            <div>
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+                Perusahaan
+              </h2>
+              <ul className="mt-4 space-y-2.5 text-sm">
+                {[thinPages.studiKasus, thinPages.blog, thinPages.karir].map((page) => (
+                  <li key={page.slug}>
+                    <Link
+                      href={page.slug}
+                      className="text-muted transition-colors hover:text-foreground"
+                    >
+                      {page.title}
                     </Link>
                   </li>
                 ))}
