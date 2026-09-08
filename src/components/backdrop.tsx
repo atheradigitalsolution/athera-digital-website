@@ -15,6 +15,10 @@ export function Backdrop() {
         className="ath-aurora absolute -right-32 top-24 h-[26rem] w-[26rem] rounded-full bg-accent-3/12 blur-[110px]"
         style={{ animationDelay: "-8s" }}
       />
+      <div
+        className="ath-aurora absolute -left-32 top-56 h-[22rem] w-[22rem] rounded-full bg-accent-2/10 blur-[110px]"
+        style={{ animationDelay: "-15s" }}
+      />
       <div className="ath-scan absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-transparent via-accent/[0.06] to-transparent" />
     </div>
   );

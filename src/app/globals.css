@@ -8,27 +8,49 @@
    di atas gelap, dan versi terangnya akan menjadi desain lain yang harus
    dirawat terpisah. `color-scheme: dark` memberi tahu browser hal yang sama,
    sehingga kontrol bawaan (scrollbar, form) ikut gelap.
+
+   WARNANYA DIAMBIL DARI LOGO, BUKAN DIPILIH ULANG. Setiap nilai di bawah ini
+   disampel langsung dari berkas logo (`public/athera-logo.webp`) — latarnya
+   dari piksel latar logo, keempat aksen dari empat rentang rona yang benar-benar
+   ada di dalam tandanya: merah muda, ungu, biru, dan hijau mint. Kalau logonya
+   berganti, ganti nilai-nilai ini dari logo yang baru, jangan dikira-kira: yang
+   membuat halaman terasa satu keping dengan tandanya adalah kesamaan warna yang
+   persis, bukan yang mirip.
    ========================================================================== */
 
 :root {
   color-scheme: dark;
 
-  --background: #05070a;
-  --surface: #090d13;
-  --surface-raised: #0c121a;
-  --foreground: #e7eef7;
-  --muted: #8a97a8;
-  --border: #1a2430;
-  --border-strong: #26333f;
+  /* Latar logo, apa adanya — sehingga tanda di header duduk di atas warna yang
+     sama dengan latarnya sendiri dan tepinya tidak pernah terlihat. */
+  --background: #04061a;
+  --surface: #080b21;
+  --surface-raised: #0d1130;
+  --foreground: #e9edfb;
+  --muted: #93a0c2;
+  --border: #1a2144;
+  --border-strong: #2b3466;
 
-  --accent: #2dd4bf;
-  --accent-2: #38bdf8;
-  --accent-3: #818cf8;
-  --accent-soft: #0c2b28;
-  --accent-contrast: #04211e;
+  /* Empat aksen = empat rona logo, dari kiri ke kanan tandanya. */
+  --accent: #1ddbee;    /* biru-sian, aksen utama: tombol, tautan, garis aktif */
+  --accent-2: #f63b84;  /* merah muda */
+  --accent-3: #7b46f2;  /* ungu */
+  --accent-4: #0eebb4;  /* hijau mint */
+  --accent-soft: #0b2333;
+  --accent-contrast: #04121c;
 
-  --ok: #4ade80;
-  --warn: #fbbf24;
+  --ok: #2ff6ac;
+  --warn: #fcae4b;
+
+  /* Spektrum penuh tandanya, untuk garis rambut dan teks bergradasi. */
+  --brand-gradient: linear-gradient(
+    90deg,
+    var(--accent-2) 0%,
+    #b82ce4 28%,
+    var(--accent-3) 50%,
+    var(--accent) 76%,
+    var(--accent-4) 100%
+  );
 }
 
 @theme inline {
@@ -42,6 +64,7 @@
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
   --color-accent-3: var(--accent-3);
+  --color-accent-4: var(--accent-4);
   --color-accent-soft: var(--accent-soft);
   --color-accent-contrast: var(--accent-contrast);
   --color-ok: var(--ok);
@@ -62,6 +85,23 @@ html {
 ::selection {
   background: color-mix(in oklab, var(--accent) 30%, transparent);
   color: var(--foreground);
+}
+
+/* Spektrum logo sebagai garis rambut — dipakai di bawah header dan di atas
+   footer, jadi warna tandanya muncul kembali di dua tepi halaman. */
+.ath-brand-line {
+  background: var(--brand-gradient);
+}
+
+/* Teks bergradasi memakai spektrum yang sama. Warna aslinya tetap ditulis
+   sebagai `color` supaya teks tidak pernah hilang kalau `background-clip: text`
+   tidak didukung. */
+.ath-brand-text {
+  color: var(--accent);
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* ==========================================================================

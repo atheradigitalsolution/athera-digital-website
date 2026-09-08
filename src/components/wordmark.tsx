@@ -1,37 +1,62 @@
+import Image from "next/image";
+
 import { company } from "@/lib/site";
 
 /**
- * Logo: segi enam bergaris ganda dengan simpul yang berdenyut pelan.
- * Denyutnya dimatikan otomatis pada `prefers-reduced-motion`.
+ * Logo ATHERA. Dua varian dari satu berkas sumber yang sama:
+ *
+ * - `mark`   — tanda saja, disandingkan dengan nama yang diset sebagai TEKS.
+ *              Dipakai di header. Namanya tetap teks dan bukan gambar supaya
+ *              tetap tajam pada setiap kerapatan layar, ikut ukuran font
+ *              pengguna, dan terbaca pembaca layar sebagai nama, bukan alt.
+ * - `lockup` — tanda dan nama sekaligus, dari berkas logo yang utuh. Dipakai di
+ *              tempat yang memberinya ruang, seperti footer.
+ *
+ * `unoptimized` DISENGAJA. Pengoptimal Next menegosiasikan format lewat header
+ * Accept, dan peramban yang tidak menawarkan WebP dilayani JPEG — format tanpa
+ * kanal alfa, sehingga latar transparan logo berubah jadi kotak hitam di atas
+ * latar situs. Berkasnya sudah berukuran render × 2 dan hanya 20 KB, jadi tidak
+ * ada yang bisa dihemat pengoptimal di sini; yang ada hanya format yang bisa ia
+ * rusak. Diperiksa dengan `curl -H 'Accept: image/png,*\/*'` pada /_next/image.
+ *
+ * Berkas logonya adalah gambar bertepi lembut (gradasi, pendar, cincin orbit),
+ * bukan bentuk geometri datar — jadi ia dipasang sebagai raster ber-alfa, bukan
+ * ditiru ulang sebagai SVG. Latarnya sudah dibuat transparan, sehingga ia duduk
+ * di atas latar apa pun tanpa kotak gelap di sekelilingnya.
  */
-export function Wordmark({ className = "" }: { className?: string }) {
+export function Wordmark({
+  className = "",
+  variant = "mark",
+}: {
+  className?: string;
+  variant?: "mark" | "lockup";
+}) {
+  if (variant === "lockup") {
+    return (
+      <Image
+        src="/athera-logo.webp"
+        alt={company.name}
+        width={480}
+        height={329}
+        unoptimized
+        className={`h-auto w-44 ${className}`}
+      />
+    );
+  }
+
   return (
     <span className={`flex items-center gap-2.5 ${className}`}>
-      <svg
+      <Image
+        src="/athera-mark.webp"
+        alt=""
         aria-hidden="true"
-        viewBox="0 0 32 32"
-        className="size-8 shrink-0"
-        fill="none"
-      >
-        <defs>
-          <linearGradient id="ath-mark" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="var(--accent)" />
-            <stop offset="100%" stopColor="var(--accent-3)" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M16 2.6 27.6 9.3v13.4L16 29.4 4.4 22.7V9.3z"
-          stroke="url(#ath-mark)"
-          strokeWidth="1.6"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 8.4 21.8 22h-2.6l-1.2-3h-4l-1.2 3h-2.6z"
-          fill="url(#ath-mark)"
-        />
-        <circle className="ath-pulse" cx="16" cy="2.6" r="1.8" fill="var(--accent)" />
-      </svg>
-      <span className="text-base font-semibold tracking-tight">
+        width={270}
+        height={174}
+        priority
+        unoptimized
+        className="h-7 w-auto shrink-0"
+      />
+      <span className="text-base font-semibold tracking-[0.18em]">
         {company.shortName}
       </span>
     </span>

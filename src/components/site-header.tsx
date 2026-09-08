@@ -10,6 +10,11 @@ import { NavLink } from "@/components/nav-link";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+      {/* Spektrum logo, setipis satu piksel, di tepi bawah header. */}
+      <span
+        aria-hidden="true"
+        className="ath-brand-line pointer-events-none absolute inset-x-0 bottom-0 h-px opacity-60"
+      />
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
         <Link
           href="/"

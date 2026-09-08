@@ -10,12 +10,12 @@ export function SiteFooter() {
     <footer className="relative overflow-hidden border-t border-border bg-surface">
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-accent/50 to-transparent"
+        className="ath-brand-line pointer-events-none absolute inset-x-0 top-0 h-px opacity-70"
       />
       <div className="mx-auto max-w-6xl px-6 py-14">
         <div className="flex flex-col gap-10 md:flex-row md:justify-between">
           <div className="max-w-sm">
-            <Wordmark />
+            <Wordmark variant="lockup" />
             <p className="mt-4 text-sm leading-relaxed text-muted">
               {company.tagline}. ERP, analitik, dan otomasi yang berjalan di
               atas data Anda sendiri — dibangun dan dirawat oleh satu tim.
