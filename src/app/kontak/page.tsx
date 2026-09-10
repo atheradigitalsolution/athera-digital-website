@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import { Backdrop } from "@/components/backdrop";
 import { Card, Eyebrow, Section, SectionHeading } from "@/components/section";
 import { RegistrationForm, isFeedback } from "@/components/registration-form";
@@ -12,6 +13,11 @@ export const metadata: Metadata = {
     "Ceritakan kondisi sistem Anda sekarang dan apa yang paling menghambat. Balasan pertama kami berisi pertanyaan, bukan proposal 40 halaman.",
   alternates: { canonical: "/kontak" },
 };
+
+// Inlined saat build (konvensi NEXT_PUBLIC_*). Nilainya site key publik dari
+// .env.production di mesin build — bukan rahasia, tapi tetap lewat environment
+// karena repositori ini publik dan kunci per-lingkungan bukan milik kode.
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export default async function KontakPage(props: PageProps<"/kontak">) {
   const { f } = await props.searchParams;
@@ -111,9 +117,13 @@ export default async function KontakPage(props: PageProps<"/kontak">) {
               description={registration.description}
             />
           </div>
-          <RegistrationForm feedback={feedback} />
+          <RegistrationForm feedback={feedback} turnstileSiteKey={TURNSTILE_SITE_KEY} />
         </div>
       </Section>
+
+      {TURNSTILE_SITE_KEY ? (
+        <Script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+      ) : null}
 
       <Section>
         <h2 className="ath-reveal text-sm font-semibold uppercase tracking-wider text-muted">

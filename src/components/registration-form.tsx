@@ -11,11 +11,17 @@ const feedbackMessage: Record<FormFeedback, string> = {
     "Sudah ada beberapa kiriman dari jaringan Anda dalam satu jam terakhir. Coba lagi nanti, atau kirim email langsung ke alamat di bawah.",
   gagal:
     "Kiriman gagal terkirim karena kendala di sisi kami, dan isian Anda tidak tersimpan. Silakan coba lagi, atau kirim email ke alamat di bawah supaya tidak tertahan di sini.",
+  verifikasi:
+    "Verifikasi keamanan belum lolos. Pastikan JavaScript aktif, muat ulang halaman, lalu kirim lagi — atau kirim email langsung ke alamat di bawah.",
 };
 
 export function isFeedback(value: unknown): value is FormFeedback {
   return (
-    value === "lengkapi" || value === "email" || value === "batas" || value === "gagal"
+    value === "lengkapi" ||
+    value === "email" ||
+    value === "batas" ||
+    value === "gagal" ||
+    value === "verifikasi"
   );
 }
 
@@ -51,14 +57,28 @@ function Field({
 }
 
 /**
- * Formulir pendaftaran — Server Component, tanpa satu baris JavaScript klien.
+ * Formulir pendaftaran — Server Component; markupnya sendiri tanpa JavaScript.
  *
- * Kiriman ditangani Server Action yang membalas dengan redirect, sehingga
- * formulir tetap berfungsi penuh kalau skrip gagal dimuat. Kolom wajib ditandai
- * `required` agar peramban menahan kesalahan sebelum permintaan dikirim;
- * pemeriksaan yang sama diulang di server untuk kiriman yang bukan dari peramban.
+ * Kiriman ditangani Server Action yang membalas dengan redirect. Kolom wajib
+ * ditandai `required` agar peramban menahan kesalahan sebelum permintaan
+ * dikirim; pemeriksaan yang sama diulang di server untuk kiriman yang bukan
+ * dari peramban.
+ *
+ * Ketika `turnstileSiteKey` terisi, widget Cloudflare Turnstile ikut dirender
+ * dan formulir MENUNTUT JavaScript: tanpa JS tidak ada token, dan server intake
+ * (ketika verifikasi diwajibkan) menolak kiriman tanpa token. Ini keputusan
+ * sadar 2026-09-10 — dukungan tanpa-JS dilepas demi verifikasi bot pada
+ * endpoint publik yang menulis ke basis data kontrol. `<noscript>` di bawah
+ * memberi tahu pengunjung tanpa JS ke mana harus pergi, bukan membiarkannya
+ * gagal tanpa penjelasan.
  */
-export function RegistrationForm({ feedback }: { feedback?: FormFeedback }) {
+export function RegistrationForm({
+  feedback,
+  turnstileSiteKey,
+}: {
+  feedback?: FormFeedback;
+  turnstileSiteKey?: string;
+}) {
   return (
     <form
       id="daftar-form"
@@ -216,6 +236,22 @@ export function RegistrationForm({ feedback }: { feedback?: FormFeedback }) {
           {registration.consentNote}
         </p>
       </div>
+
+      {turnstileSiteKey ? (
+        <div className="mt-7">
+          {/* Widget implicit-rendering: api.js memindai kelas ini saat dimuat
+              dan menyuntikkan field tersembunyi `cf-turnstile-response` ke
+              formulir pembungkusnya. Site key adalah nilai publik. */}
+          <div className="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="auto" />
+          <noscript>
+            <p className="mt-3 rounded-xl border border-[var(--warn)]/40 px-4 py-3 text-sm text-[var(--warn)]">
+              Formulir ini memakai verifikasi keamanan yang membutuhkan
+              JavaScript. Aktifkan JavaScript, atau kirim email langsung ke{" "}
+              {company.email}.
+            </p>
+          </noscript>
+        </div>
+      ) : null}
 
       <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center">
         <button

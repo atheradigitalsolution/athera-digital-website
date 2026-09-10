@@ -10,7 +10,7 @@ import { rateLimit } from "@/lib/rate-limit";
  * bukan state di komponen: dengan begitu formulirnya tetap Server Component
  * dan tetap terkirim meski JavaScript tidak jalan sama sekali.
  */
-export type FormFeedback = "lengkapi" | "email" | "batas" | "gagal";
+export type FormFeedback = "lengkapi" | "email" | "batas" | "gagal" | "verifikasi";
 
 const MAX = {
   company_name: 200,
@@ -66,9 +66,15 @@ export async function daftar(formData: FormData) {
   const ip = await clientIp();
   if (!rateLimit(ip)) redirect("/kontak?f=batas#daftar");
 
+  // Token Turnstile disuntikkan widget Cloudflare sebagai field tersembunyi
+  // `cf-turnstile-response`. Diteruskan apa adanya; verifikasinya milik Odoo
+  // (server-ke-server dengan secret), bukan milik kode ini.
+  const turnstileToken = clean(formData.get("cf-turnstile-response"), 4000);
+
   const result = await submitOnboarding(
     {
       ...values,
+      ...(turnstileToken ? { turnstile_token: turnstileToken } : {}),
       // Odoo memakai `partner_email` saat mempromosikan kiriman menjadi journey,
       // dan `contact_email` saat menyusun profil perusahaan. Kirim keduanya.
       partner_email: values.contact_email,
@@ -83,5 +89,6 @@ export async function daftar(formData: FormData) {
 
   if (result.ok) redirect("/kontak/terkirim");
   if (result.reason === "rate_limited") redirect("/kontak?f=batas#daftar");
+  if (result.reason === "turnstile") redirect("/kontak?f=verifikasi#daftar");
   redirect("/kontak?f=gagal#daftar");
 }

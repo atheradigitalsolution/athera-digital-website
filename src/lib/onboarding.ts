@@ -47,7 +47,7 @@ const TIMEOUT_MS = 10_000;
 
 export type IntakeResult =
   | { ok: true; token: string | null }
-  | { ok: false; reason: "rate_limited" | "rejected" | "unreachable" };
+  | { ok: false; reason: "rate_limited" | "rejected" | "unreachable" | "turnstile" };
 
 function post(body: string, clientIp: string | null) {
   return new Promise<{ status: number; text: string }>((resolve, reject) => {
@@ -128,6 +128,11 @@ export async function submitOnboarding(
 
   const result = parsed.result;
   if (result?.error === "rate_limited") return { ok: false, reason: "rate_limited" };
+  // Dua-duanya berarti verifikasi bot tidak lolos: `turnstile_failed` = token
+  // absen/ditolak Cloudflare, `turnstile_unavailable` = verifikasi diwajibkan
+  // tetapi tidak bisa dijalankan. Bagi pengunjung keduanya satu saran yang sama.
+  if (result?.error === "turnstile_failed" || result?.error === "turnstile_unavailable")
+    return { ok: false, reason: "turnstile" };
   if (result?.error) return { ok: false, reason: "rejected" };
 
   return { ok: true, token: result?.token ?? null };
